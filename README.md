@@ -1,5 +1,8 @@
-Symfony2 under Nginx (PHP-FPM) & Varnish config
+Symfony2 under Nginx (PHP5-FPM) & Varnish config
 ===============================================
+
+About
+-----
 
 This is a default configuraion example of Symfony2 application being hosted via Nginx server. 
 Varnish is being used as a reverse proxy accellerator. 
@@ -7,6 +10,21 @@ Varnish is being used as a reverse proxy accellerator.
 Hosted under Debian/Ubuntu server.
 
 Repository folders mimic default Debian catalogue structure.
+
+Testing environment - Hardware
+------------------------------
+
+* Intel i5-3570K @ 3.8 GHz
+* Memmory: 7.5Gb @ 1866 MHz
+* HDD: 100Gb ssd - Intel 520 series
+
+Testing environment - Software
+------------------------------
+
+* OS: Linux mint 15 (Ubuntu 13.04)
+* Nginx: 1.2.6
+* Symfony: 2.3.3
+* PHP: 5.4.9
 
 Credit
 ------
