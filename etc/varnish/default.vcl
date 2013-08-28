@@ -8,10 +8,50 @@ backend default {
 ##
 ## Cache only content with no cookies
 sub vcl_recv {
-    	unset req.http.cookie;
+	set req.backend = default;
+
+	## Set headers that ESI cache is supported
+    	set req.http.Surrogate-Capability = "abc=ESI/1.0";
+
+	## Forward client's ip to backend server.
+	if (req.http.x-forwarded-for) {
+		set req.http.X-Forwarded-For =
+		req.http.X-Forwarded-For ", " client.ip;
+	} else {
+		set req.http.X-Forwarded-For = client.ip;
+	}
 }
+
 sub vcl_fetch {
-    	unset beresp.http.set-cookie;
+
+	## Do ESI only if specific header is received.
+    	if (beresp.http.Surrogate-Control ~ "ESI/1.0") {
+        	unset beresp.http.Surrogate-Control;
+        	set beresp.do_esi = true;
+    	}
+
+	if (!beresp.cacheable) {
+		return (pass);
+	}
+
+	if (beresp.http.Set-Cookie) {
+		return (pass);
+	}
+
+	return (deliver);
+}
+
+sub vcl_miss {
+    if (req.request == "PURGE") {
+        error 404 "Not purged";
+    }
+}
+
+sub vcl_hit {
+    if (req.request == "PURGE") {
+        set obj.ttl = 0s;
+        error 200 "Purged";
+    }
 }
 
 ##
