@@ -38,9 +38,6 @@ server {
 		fastcgi_pass 127.0.0.1:9000;
 		# fastcgi_pass unix:/tmp/php5-fpm.sock;
 
-		## This is not SSL server configuration. So let's make $_SERVER['HTTPS'] = Off;
-		fastcgi_param  HTTPS off;
-
 		include fastcgi_params;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		fastcgi_param PATH_INFO $fastcgi_path_info;
