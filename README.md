@@ -11,6 +11,11 @@ Hosted under Debian/Ubuntu server.
 
 Repository folders mimic default Debian catalogue structure.
 
+Installation
+------------
+
+See: [INSTALL.md](https://github.com/egils/Symfony2-Nginx-Varnish-config/blob/master/README.md).
+
 Testing environment - Hardware
 ------------------------------
 
