@@ -13,6 +13,11 @@ sub vcl_recv {
 	## Set headers that ESI cache is supported
     	set req.http.Surrogate-Capability = "abc=ESI/1.0";
 
+	set req.http.X-Forwarded-Port = "8080"; ## Use 80 if not in DEV environment.
+	if (req.http.Authorization || req.http.Cookie) {
+	    	return (pass);
+	}
+
 	## Forward client's ip to backend server.
 	if (req.http.x-forwarded-for) {
 		set req.http.X-Forwarded-For =
@@ -30,28 +35,39 @@ sub vcl_fetch {
         	set beresp.do_esi = true;
     	}
 
-	if (!beresp.cacheable) {
-		return (pass);
+	## from http://pastie.org/2094138
+	# Varnish determined the object was not cacheable.
+	if (req.http.Cookie ~ "(username|sessnion)") {
+		set beresp.http.X-Cacheable = "NO:Got Session";
+		return(hit_for_pass);
+	} elseif (beresp.http.Cache-Control ~ "private") {
+		set beresp.http.X-Cacheable = "NO:Cache-Control=private";
+		return(hit_for_pass);
+	} elseif (beresp.http.Cache-Control ~ "no-cache" || beresp.http.Pragma ~ "no-cache") {
+		set beresp.http.X-Cacheable = "Refetch forced by user";
+		return(hit_for_pass);
+	# You are extending the lifetime of the object artificially
+	} elseif (beresp.ttl < 1s) {
+		set beresp.ttl   = 5s;
+		set beresp.grace = 5s;
+		set beresp.http.X-Cacheable = "YES:FORCED";
+	# Varnish determined the object was cacheable
+	} else {
+		set beresp.http.X-Cacheable = "YES";
 	}
-
-	if (beresp.http.Set-Cookie) {
-		return (pass);
-	}
-
-	return (deliver);
 }
 
 sub vcl_miss {
-    if (req.request == "PURGE") {
-        error 404 "Not purged";
-    }
+    	if (req.request == "PURGE") {
+        	error 404 "Not purged";
+    	}
 }
 
 sub vcl_hit {
-    if (req.request == "PURGE") {
-        set obj.ttl = 0s;
-        error 200 "Purged";
-    }
+	  if (req.request == "PURGE") {
+	    	purge;
+	    	error 200 "Purged.";
+	  }
 }
 
 ##
