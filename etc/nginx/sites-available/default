@@ -1,5 +1,5 @@
 server {
-	listen 80;
+	listen 80; ## Set 8080 if not in DEV environment
 	server_name www.domain;		  #subject to change
 	root /home/<username>/www/domain; #subject to change
 
