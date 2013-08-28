@@ -1,0 +1,9 @@
+##
+## Setup varnish daemon
+## Change 8080 to 80 if not in DEV environment.
+DAEMON_OPTS="-a :8080 \
+             -T localhost:6082 \
+             -f /etc/varnish/default.vcl \
+             -S /etc/varnish/secret \
+             -s malloc,256m"
+
