@@ -14,7 +14,7 @@ Repository folders mimic default Debian catalogue structure.
 Installation
 ------------
 
-See: [INSTALL.md](https://github.com/egils/Symfony2-Nginx-Varnish-config/blob/master/README.md).
+See: [INSTALL.md](https://github.com/egils/Symfony2-Nginx-Varnish-config/blob/master/INSTALL.md).
 
 Testing environment - Hardware
 ------------------------------
