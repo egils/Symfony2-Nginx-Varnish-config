@@ -19,17 +19,17 @@ See: [INSTALL.md](https://github.com/egils/Symfony2-Nginx-Varnish-config/blob/ma
 Testing environment - Hardware
 ------------------------------
 
-* Intel i5-3570K @ 3.8 GHz
-* Memmory: 7.5Gb @ 1866 MHz
+* Intel i7-3770K @ 4.3 GHz
+* Memmory: 7.7Gb @ 1866 MHz
 * HDD: 100Gb ssd - Intel 520 series
 
 Testing environment - Software
 ------------------------------
 
-* OS: Linux mint 15 (Ubuntu 13.04)
-* Nginx: 1.2.6
-* Symfony: 2.3.3
-* PHP: 5.4.9
+* OS: Linux mint 17 (Ubuntu 14.04)
+* Nginx: 1.4.6
+* Symfony: 2.5.4
+* PHP: 5.5.9
 
 Credit
 ------
